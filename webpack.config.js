@@ -1,8 +1,9 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const glob = require("glob");
 const CopyPlugin = require("copy-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-module.exports = {
+const jsConfig = {
   entry: {
     popup: "./src/popup.jsx",
   },
@@ -22,10 +23,6 @@ module.exports = {
           },
         },
       },
-      {
-        test: /\.(png|jpe?g|gif)$/i,
-        loader: "file-loader",
-      },
     ],
   },
   plugins: [
@@ -38,3 +35,29 @@ module.exports = {
     }),
   ],
 };
+
+const pngConfig = {
+  entry: Object.fromEntries(
+    glob
+      .sync(path.resolve(__dirname, "public/assets/*.png"))
+      .map((v) => [v.split("public/assets/")[1], v])
+  ),
+  output: {
+    path: path.resolve(__dirname, "dist/assets"),
+    filename: "[name].[ext]",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loader: "file-loader",
+        options: {
+          name: "[name].[ext]",
+        },
+      },
+    ],
+  },
+  mode: "development",
+};
+
+module.exports = [jsConfig, pngConfig];
