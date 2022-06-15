@@ -1,15 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import List from "./List.jsx";
 import * as api from "../api/api";
+import FM from "../constants/filterMethod";
 import IM from "../constants/interactionMessage.js";
 
 const GroupInfo = () => {
   const navigate = useNavigate();
-  const [groupData] = useState(useLocation()?.state.item);
+  const [groupData, setGroupData] = useState(useLocation()?.state.item);
   const [groupTitle, setGroupTitle] = useState(groupData?.title);
+  const [filterMethod, setFilterMethod] = useState("");
+
+  const getGroup = async (groupData) => {
+    const group = await (await api.getGroupInfo(groupData._id)).data.data.group;
+
+    setGroupData(group);
+  };
+
+  useEffect(() => {
+    getGroup(groupData);
+  }, []);
 
   const onTitleChange = (e) => {
     e.preventDefault();
@@ -26,6 +38,10 @@ const GroupInfo = () => {
     navigate("/", { state: true });
   };
 
+  const onSelectChange = (e) => {
+    setFilterMethod(e.target.value);
+  };
+
   return (
     <GroupInfoStyle>
       <Nav>
@@ -33,27 +49,31 @@ const GroupInfo = () => {
           back
         </span>
         <input value={groupTitle} onChange={onTitleChange} />
-        <div className="buttonWrapper">
-          <p className="submit" onClick={() => onSubmit(groupData, groupTitle)}>
-            submit
-          </p>
-          <p className="delete" onClick={() => onDelete(groupData)}>
-            delete
-          </p>
-        </div>
+        <select id={FM.METHOD} value={filterMethod} onChange={onSelectChange}>
+          <option value={FM.DEFAULT}>Default</option>
+          <option value={FM.LATEST}>Latest</option>
+          <option value={FM.DONE}>Done</option>
+          <option value={FM.ONGOING}>Ongoing</option>
+        </select>
       </Nav>
-      <MembersWrapper>
-        <div className="memberContent">
-          {groupData.members.map((member) => (
-            <p key={member._id}>{member.name}</p>
-          ))}
-        </div>
-      </MembersWrapper>
+      <ButtonWrapper>
+        <button
+          className="button"
+          onClick={() => onSubmit(groupData, groupTitle)}
+        >
+          SUBMIT
+        </button>
+        <button className="button" onClick={() => onDelete(groupData)}>
+          DELETE
+        </button>
+      </ButtonWrapper>
       <ListWrapper>
         <List
           items={groupData.todos}
           status={IM.TODOS_FROM_GROUP}
           groupData={groupData}
+          filterMethod={filterMethod}
+          isVisible={1}
         />
       </ListWrapper>
     </GroupInfoStyle>
@@ -97,6 +117,7 @@ const Nav = styled.div`
       outline: none;
     }
   }
+
   .buttonWrapper {
     display: flex;
     flex-direction: column;
@@ -115,18 +136,12 @@ const Nav = styled.div`
   }
 `;
 
-const MembersWrapper = styled.div`
+const ButtonWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-
-  .memberContent {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 350px;
-    height: 50px;
-  }
+  justify-content: space-around;
+  width: 350px;
+  height: 50px;
 
   .button {
     width: 170px;

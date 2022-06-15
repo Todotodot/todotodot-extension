@@ -2,10 +2,10 @@ import Axios from "axios";
 
 import { getUserEmail, getToken } from "../utils/verifyUser";
 
-const API = Axios.create({ baseURL: REACT_APP_PORT });
+const API = Axios.create({ baseURL: "YOUR PORT" });
 
 API.interceptors.request.use((req) => {
-  req.headers.Authorization = `Extension ${process.env.REACT_APP_SECRET_KEY}`;
+  req.headers.Authorization = `Extension ${"OUR SECRET KEY"}`;
   req.headers.Email = localStorage.getItem("email");
 
   return req;
