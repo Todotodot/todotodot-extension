@@ -1,5 +1,6 @@
+require("dotenv").config();
 const path = require("path");
-const Dotenv = require("dotenv-webpack");
+const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -48,6 +49,9 @@ module.exports = {
       chunks: ["popup"],
     }),
     new CleanWebpackPlugin(),
-    new Dotenv(),
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+    }),
+    new webpack.EnvironmentPlugin(["SECRET_KEY", "PORT", "NODE_ENV"]),
   ],
 };
