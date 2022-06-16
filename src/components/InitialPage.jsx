@@ -4,11 +4,13 @@ import styled from "styled-components";
 
 import List from "./List.jsx";
 import { getUserInfo } from "../api/api";
+import FM from "../constants/filterMethod";
 import IM from "../constants/interactionMessage";
 
 const InitialPage = () => {
   const [shouldShowGroup, setShouldShowGroup] = useState(useLocation()?.state);
   const [shouldShowTodo, setShouldShowTodo] = useState(true);
+  const [filterMethod, setFilterMethod] = useState("");
   const [userData, setUserData] = useState({});
 
   const showTodo = (e) => {
@@ -29,13 +31,30 @@ const InitialPage = () => {
     setUserData(result.data.user);
   };
 
+  const onSelectChange = (e) => {
+    setFilterMethod(e.target.value);
+  };
+
   useEffect(() => {
     getUser();
   }, []);
 
   return (
     <InitialPageStyle>
-      <Name>{userData?.name}</Name>
+      <NameWrapper>
+        <div />
+        <Name>{userData?.name}</Name>
+        {shouldShowTodo && !shouldShowGroup ? (
+          <select id={FM.METHOD} value={filterMethod} onChange={onSelectChange}>
+            <option value={FM.DEFAULT}>Default</option>
+            <option value={FM.LATEST}>Latest</option>
+            <option value={FM.DONE}>Done</option>
+            <option value={FM.ONGOING}>Ongoing</option>
+          </select>
+        ) : (
+          <div />
+        )}
+      </NameWrapper>
       <ButtonWrapper>
         <button className="button" onClick={showTodo}>
           Todo
@@ -47,14 +66,29 @@ const InitialPage = () => {
       <ListWrapper>
         {Object.keys(userData).length !== 0 &&
           (shouldShowTodo && !shouldShowGroup ? (
-            <List items={userData.todos} status={IM.TODOS} />
+            <List
+              items={userData.todos}
+              status={IM.TODOS}
+              filterMethod={filterMethod}
+              isVisible={1}
+            />
           ) : (
-            <List items={userData.groups} status={IM.GROUPS} />
+            <List items={userData.groups} status={IM.GROUPS} isVisible={0} />
           ))}
       </ListWrapper>
     </InitialPageStyle>
   );
 };
+
+const NameWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  div,
+  select {
+    width: 75px;
+  }
+`;
 
 const InitialPageStyle = styled.div`
   display: flex;
@@ -66,9 +100,11 @@ const InitialPageStyle = styled.div`
 `;
 
 const Name = styled.h1`
+  width: 200px;
   height: 50px;
   line-height: 50px;
   font-size: 20px;
+  text-align: center;
 `;
 
 const ButtonWrapper = styled.div`

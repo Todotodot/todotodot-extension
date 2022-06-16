@@ -27,13 +27,11 @@ const TodoInfo = () => {
     switch (status) {
       case IM.TODOS:
         api.updateTodo(todo._id, { title, content });
-        navigate("/", { state: false });
-        break;
+        return navigate("/", { state: false });
 
       case IM.TODOS_FROM_GROUP:
         api.updateGroupTodo(groupId, todo._id, { title, content });
-        navigate("/", { state: true });
-        break;
+        return navigate("/", { state: true });
     }
   };
 
@@ -41,11 +39,11 @@ const TodoInfo = () => {
     switch (status) {
       case IM.TODOS:
         api.deleteTodo(todo._id);
-        navigate("/", { state: false });
+        return navigate("/", { state: false });
 
       case IM.TODOS_FROM_GROUP:
         api.deleteGroupTodo(groupId, todo._id);
-        navigate("/", { state: true });
+        return navigate("/", { state: true });
     }
   };
 
@@ -58,9 +56,13 @@ const TodoInfo = () => {
         <input className="title" value={title} onChange={titleOnChange} />
         <div className="blank" />
       </Nav>
-      <ButtonWrapper>
-        <button onClick={() => onSubmit(todo, status)}>Submit</button>
-        <button onClick={() => onDelete(todo, status)}>Delete</button>
+      <ButtonWrapper hasDone={todo.isCompleted}>
+        <button className="edit" onClick={() => onSubmit(todo, status)}>
+          Submit
+        </button>
+        <button className="delete" onClick={() => onDelete(todo, status)}>
+          Delete
+        </button>
       </ButtonWrapper>
       <Content value={content} onChange={contentOnChange} />
     </TodoInfoStyle>
@@ -120,6 +122,10 @@ const ButtonWrapper = styled.div`
   button {
     width: 170px;
     height: 30px;
+  }
+
+  .edit {
+    pointer-events: ${({ hasDone }) => (hasDone ? "none" : "initial")};
   }
 `;
 

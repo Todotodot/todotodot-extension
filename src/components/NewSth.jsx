@@ -26,18 +26,15 @@ const NewSth = () => {
     switch (type) {
       case IM.NEW_TODO:
         await api.createTodo({ title, content });
-        navigate("/", { state: false });
-        break;
+        return navigate("/", { state: false });
 
       case IM.NEW_GROUP:
         await api.createGroup({ title, content });
-        navigate("/", { state: true });
-        break;
+        return navigate("/", { state: true });
 
       case IM.NEW_TODO_FROM_GROUP:
         await api.createGroupTodo(groupId, { title, content });
-        navigate("/", { state: true });
-        break;
+        return navigate(-1);
     }
   };
 
