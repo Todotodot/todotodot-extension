@@ -14,9 +14,9 @@ const GroupInfo = () => {
   const [filterMethod, setFilterMethod] = useState("");
 
   const getGroup = async (groupData) => {
-    const group = await (await api.getGroupInfo(groupData._id)).data.data.group;
+    const group = await api.getGroupInfo(groupData._id);
 
-    setGroupData(group);
+    setGroupData(group.data.data.group);
   };
 
   useEffect(() => {

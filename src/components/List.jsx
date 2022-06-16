@@ -40,22 +40,22 @@ const List = React.memo(
     };
 
     const filterByMethod = (method, items) => {
-      const doneTodoSortedByDate = items.done().sortByDate();
-      const onGoingTodoSortedByDate = items.onGoing().sortByDate();
+      const completedTodoSortedByDate = items.isDone().sortByDate();
+      const inCompletedTodoSortedByDate = items.isOnGoing().sortByDate();
 
       switch (method) {
         case FM.LATEST:
           return items.sortByDate();
 
         case FM.DONE:
-          return doneTodoSortedByDate;
+          return completedTodoSortedByDate;
 
         case FM.ONGOING:
-          return onGoingTodoSortedByDate;
+          return inCompletedTodoSortedByDate;
 
         case FM.DEFAULT:
         default:
-          return [...onGoingTodoSortedByDate, ...doneTodoSortedByDate];
+          return [...inCompletedTodoSortedByDate, ...completedTodoSortedByDate];
       }
     };
 
@@ -140,11 +140,11 @@ Array.prototype.sortByDate = function () {
   return this.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 };
 
-Array.prototype.done = function () {
+Array.prototype.isDone = function () {
   return this.filter((item) => item.isCompleted);
 };
 
-Array.prototype.onGoing = function () {
+Array.prototype.isOnGoing = function () {
   return this.filter((item) => !item.isCompleted);
 };
 
