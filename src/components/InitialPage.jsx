@@ -45,12 +45,18 @@ const InitialPage = () => {
         <div />
         <Name>{userData?.name}</Name>
         {shouldShowTodo && !shouldShowGroup ? (
-          <select id={FM.METHOD} value={filterMethod} onChange={onSelectChange}>
-            <option value={FM.DEFAULT}>Default</option>
-            <option value={FM.LATEST}>Latest</option>
-            <option value={FM.DONE}>Done</option>
-            <option value={FM.ONGOING}>Ongoing</option>
-          </select>
+          <div>
+            <select
+              id={FM.METHOD}
+              value={filterMethod}
+              onChange={onSelectChange}
+            >
+              <option value={FM.DEFAULT}>Default</option>
+              <option value={FM.LATEST}>Latest</option>
+              <option value={FM.DONE}>Done</option>
+              <option value={FM.ONGOING}>Ongoing</option>
+            </select>
+          </div>
         ) : (
           <div />
         )}
@@ -84,9 +90,15 @@ const NameWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  div,
-  select {
+  div {
     width: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  select {
+    width: 70px;
   }
 `;
 
