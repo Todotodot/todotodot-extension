@@ -18,9 +18,7 @@ const List = React.memo(
           return navigate(`/groups/${item._id}`, { state: { item, status } });
 
         case IM.TODOS_FROM_GROUP:
-          return navigate(`/todos/${item._id}`, {
-            state: { item, status, id: groupData._id },
-          });
+          return navigate(`/todos/${item._id}`, { state: { item, status, id: groupData._id } });
       }
     };
 
@@ -33,9 +31,7 @@ const List = React.memo(
           return navigate("/new", { state: { type: IM.NEW_GROUP } });
 
         case IM.TODOS_FROM_GROUP:
-          return navigate("/new", {
-            state: { type: IM.NEW_TODO_FROM_GROUP, groupId: groupData._id },
-          });
+          return navigate("/new", { state: { type: IM.NEW_TODO_FROM_GROUP, groupId: groupData._id } });
       }
     };
 
@@ -69,7 +65,7 @@ const List = React.memo(
 
         case IM.TODOS_FROM_GROUP:
           return chrome.tabs.create({
-            url: `http://localhost:3000/inGame/${groupData._id}/todos/${todo._id}`,
+            url: `http://localhost:3000/inGame/groups/${groupData._id}/todos/${todo._id}`,
           });
       }
     };
@@ -101,7 +97,7 @@ const List = React.memo(
 
 const AddButton = styled.div`
   position: relative;
-  width: 350px;
+  width: 345px;
   height: 30px;
   text-align: center;
   line-height: 30px;
@@ -113,13 +109,14 @@ const AddButton = styled.div`
 
 const Li = styled.li`
   position: relative;
-  width: 350px;
+  width: 340px;
   height: 30px;
   text-align: right;
   line-height: 30px;
   border: 0.1px solid gray;
   border-radius: 5px;
   margin: 3px;
+  padding-right: 5px;
   cursor: pointer;
   background-color: ${({ hasDone }) => (hasDone ? "gray" : "none")};
 
