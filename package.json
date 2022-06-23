@@ -5,7 +5,8 @@
   "main": "/components/index.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "test": "jest --env=jsdom"
   },
   "repository": {
     "type": "git",
@@ -31,14 +32,20 @@
     "@babel/plugin-syntax-jsx": "^7.17.12",
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-react": "^7.17.12",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.1.0",
     "babel-loader": "^8.2.5",
+    "cheerio": "^1.0.0-rc.3",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^9.0.1",
     "dotenv": "^16.0.1",
     "file-loader": "^6.2.0",
     "html-loader": "^3.1.0",
     "html-webpack-plugin": "^5.5.0",
+    "jest": "^28.1.1",
+    "jest-environment-jsdom": "^28.1.1",
     "path": "^0.12.7",
+    "sinon-chrome": "^3.0.1",
     "webpack": "^5.73.0",
     "webpack-cli": "^4.9.2"
   }
