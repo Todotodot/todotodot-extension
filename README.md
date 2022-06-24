@@ -29,8 +29,8 @@ npm install
 ### 환경 변수 설정법
 
 ```javascript
-SECRET_KEY=eyJhbGciOiJIUzI1NiJ9.Y2hyb21lLWV4dGVuc2lvbg.lf5G968fEhWHvdude1YI6b-XpN5znNA6OyCjRLpu9J4
-PORT=<YOUR_SERVER_URL>
+SECRET_KEY=<YOUR_SECRET_KEY>
+PORT=<YOUR_PORT>
 NODE_ENV=<YOUR_ENVIRONMENT>
 ```
 
